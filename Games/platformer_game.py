@@ -24,21 +24,21 @@ ENEMY_VISION = 150.0
 
 # --- LEVEL DATA (Visual Editor) ---
 LEVEL_MAP = [
-    "###############################################################################",
-    "#                                                                             #",
-    "#                                                                              ",
-    "#                                                                              ",
-    "#                                                                             #",
-    "#                                                                            ##",
-    "#                     #                                                      S#",
-    "#                 ##                                                        ###",
-    "#           ###SSS                             E       S                S     #",
-    "#          #   ###                         ###### S  #####              ##    #",
-    "#                        E                ##    ####     ##                   #",
-    "#      ##               ####            ###                ###              ###",
-    "#    #####        ####           SS           S      E S     ##     SS        #",
-    "########################   ####################################################",
-    "###############################################################################",
+    "#                                                                             #####                                                                       ",
+    "#                                                                             #   #                                                                       ",
+    "#                                                                                 #                                                                       ",
+    "#                                                                                 #                                   E                                   ",
+    "#                                                                             #   #                             ##########                                ",
+    "#                                                                            ##   #                                                                       ",
+    "#                     #                                                      S#   #                         ##                                            ",
+    "#                 ##                                                        ###   #                                                                       ",
+    "#           ###SSS                             E       S                S     #   #                            #                                          ",
+    "#          #   ###                         ###### S  #####              ##    #   #                       S                         ### S ###             ",
+    "#                        E                ##    ####     ##                   #   #                    ######                           #                 ",
+    "#      ##               ####            ###                ###              ###                    ##                           ###                       ",
+    "#    #####        ####           SS           S      E S     ##     SS        #       SS####   E         S#####SS   S  E      SS SS   E     ##   E        ",
+    "########################   ###############################################################################################################################",
+    "##########################################################################################################################################################",
 ]
 
 class Level:
@@ -49,7 +49,7 @@ class Level:
 
         self.palette = displayio.Palette(2)
         self.palette[0] = 0x6B8CFF
-        self.palette[1] = 0x00AA00
+        self.palette[1] = 0xADD8E6
 
         # single tile bitmap (two frames stacked vertically as before)
         self.bitmap = displayio.Bitmap(TILE_SIZE, TILE_SIZE * 2, 2)
@@ -104,7 +104,7 @@ class Spike:
         self.hitbox_y = y + 6
         self.hitbox_w = 10
         self.hitbox_h = 10
-        self.sprite = displayio.TileGrid(bitmap, pixel_shader=palette, x=int(x - 8), y=int(y - 9))
+        self.sprite = displayio.TileGrid(bitmap, pixel_shader=palette, x=int(x - 8), y=int(y - 8))
         # cache integer position so we don't write the same position repeatedly
         self._prev_x = int(self.sprite.x)
         self._prev_y = int(self.sprite.y)
@@ -121,13 +121,42 @@ class Enemy:
         self.vy = 0.0
         self.on_ground = False
         self.alive = True
-        self.bitmap = displayio.Bitmap(16, 16, 1)
-        self.palette = displayio.Palette(1)
-        self.palette[0] = 0x880000
-        self.sprite = displayio.TileGrid(self.bitmap, pixel_shader=self.palette, x=int(x), y=int(y))
-        # prev integer positions to avoid redundant writes
-        self._prev_sprite_x = int(self.sprite.x)
-        self._prev_sprite_y = int(self.sprite.y)
+
+        # --- SEAL SPRITE SETUP ---
+        self.sprite_offset_x = -8
+        self.sprite_offset_y = -12
+        self.frame_index = 0
+        self.anim_timer = 0.0
+
+        try:
+            # Load the 32x32 seal sprite sheet
+            bmp = displayio.OnDiskBitmap("/sprites/seal.bmp")
+            pal = bmp.pixel_shader
+            if isinstance(pal, displayio.ColorConverter):
+                pal.make_transparent(0xFF00FF)
+            else:
+                pal.make_transparent(0)
+                for i in range(len(pal)):
+                    if pal[i] == 0xFF00FF:
+                        pal.make_transparent(i)
+
+            self.sprite = displayio.TileGrid(bmp, pixel_shader=pal, tile_width=32, tile_height=32)
+        except Exception as e:
+            print(f"Failed to load seal.bmp: {e}")
+            # Fallback if image is missing
+            fallback = displayio.Bitmap(32, 32, 1)
+            pal = displayio.Palette(1)
+            pal[0] = 0x880000
+            self.sprite = displayio.TileGrid(fallback, pixel_shader=pal, tile_width=32, tile_height=32)
+
+        self.sprite.x = int(x) + self.sprite_offset_x
+        self.sprite.y = int(y) + self.sprite_offset_y
+
+        # Prev integer positions/states to avoid redundant display writes
+        self._prev_sprite_x = self.sprite.x
+        self._prev_sprite_y = self.sprite.y
+        self._prev_frame_index = self.frame_index
+        self._prev_flip_x = False
 
     def reset(self):
         self.x = float(self.start_x)
@@ -137,9 +166,10 @@ class Enemy:
         self.on_ground = False
         self.alive = True
         self.sprite.hidden = False
-        # only set sprite pos if different
-        sx = int(self.x)
-        sy = int(self.y)
+        self.frame_index = 0
+
+        sx = int(self.x) + self.sprite_offset_x
+        sy = int(self.y) + self.sprite_offset_y
         if self._prev_sprite_x != sx:
             self.sprite.x = sx
             self._prev_sprite_x = sx
@@ -150,6 +180,7 @@ class Enemy:
     def update(self, dt, level, player):
         if not self.alive:
             return
+
         dist_to_player = player.x - self.x
 
         if abs(dist_to_player) < ENEMY_VISION:
@@ -203,15 +234,34 @@ class Enemy:
             self.alive = False
             self.sprite.hidden = True
 
-        # only update sprite.x/y if the integer position changed
-        sx = int(self.x)
-        sy = int(self.y)
+        # --- ANIMATION LOOP ---
+        if abs(self.vx) > 5:
+            self.anim_timer += dt
+            if self.anim_timer > 0.15:
+                self.frame_index = (self.frame_index + 1) % 3
+                self.anim_timer = 0.0
+        else:
+            self.frame_index = 0
+
+        # --- VISUAL UPDATES ---
+        sx = int(self.x) + self.sprite_offset_x
+        sy = int(self.y) + self.sprite_offset_y
+
         if self._prev_sprite_x != sx:
             self.sprite.x = sx
             self._prev_sprite_x = sx
         if self._prev_sprite_y != sy:
             self.sprite.y = sy
             self._prev_sprite_y = sy
+
+        if self._prev_frame_index != self.frame_index:
+            self.sprite[0] = self.frame_index
+            self._prev_frame_index = self.frame_index
+
+        flip_val = self.vx > 0
+        if self._prev_flip_x != flip_val:
+            self.sprite.flip_x = flip_val
+            self._prev_flip_x = flip_val
 
 class Player:
     def __init__(self, x, y):
