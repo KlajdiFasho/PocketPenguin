@@ -1,58 +1,65 @@
-# Gymnasiearbete - Gameboy Project
+# PocketPenguin - Gameboy Emulator Project
 
-## Project Overview
+## Overview
 
-This is a **Gameboy emulator/simulator project** developed as a "Gymnasiearbete" (Swedish upper secondary school graduation project). The project is written in **Python** and simulates or emulates the functionality of a classic Gameboy handheld console.
-
-## Project Structure
-
-### 1. **Fonts/** Directory
-Contains font files and resources used for rendering text and UI elements in the Gameboy emulator.
-
-### 2. **Games/** Directory
-Holds game-related files, ROMs, or game data that can be executed within the emulator.
-
-### 3. **Handlers/** Directory
-Contains handler modules that manage:
-- Input handling (button presses, controls)
-- System event processing
-- Core emulation logic
-
-### 4. **code.py** - Main Entry Point
-The primary CircuitPython script that orchestrates the entire Gameboy emulator, including:
-- Initialization of emulator components
-- Main game loop
-- Rendering and display management
-- Integration of handlers and resources
-
-## Technologies Used
-
-- **Language**: CircuitPython
-- **Platform**: Handheld console emulation
-- **Focus**: Classic Gameboy functionality
-
-## Features
-
-This Gameboy project includes:
-- Classic Gameboy emulation capabilities
-- Font rendering system for UI and text display
-- Input handling for controller simulation
-- Game loading and execution framework
-- Modular architecture for easy expansion
-
-## Future Enhancements
-
-Potential areas for expansion:
-- Additional game compatibility
-- Enhanced graphics rendering
-- Save/load state functionality
-- Custom ROM support
-- Performance optimization
-
-## Author
-
-**KlajdiFasho** - [GitHub Profile](https://github.com/KlajdiFasho)
+**PocketPenguin** is a **Gameboy emulator/simulator project** designed as a "Gymnasiearbete" (a Swedish upper secondary school graduation project). This emulator is written in **Python** and focuses on mimicking the functionality and behavior of a classic Gameboy system. The project builds on CircuitPython to emulate a portable gaming environment, offering a modular architecture and supporting custom games.
 
 ---
 
-*This is a graduation project showcasing software emulation and systems programming concepts in CircuitPython.*
+![Gameboy Emulator Screenshot](#) *[Replace with actual screenshot URL]*
+
+---
+
+## Table of Contents
+
+1. [Introduction](#introduction)
+2. [Features](#features)
+3. [Project Structure](#project-structure)
+4. [Games Included](#games-included)
+5. [Supported Technologies](#supported-technologies)
+6. [Setup & Usage](#setup--usage)
+7. [Future Enhancements](#future-enhancements)
+8. [Contributing](#contributing)
+9. [Acknowledgments](#acknowledgments)
+10. [License](#license)
+
+---
+
+## Introduction
+
+The PocketPenguin project demonstrates core concepts in **software emulation**, **game design**, and **systems programming**. The primary goal of this effort is to develop a retro-gaming platform compatible with Gameboy-style games, embedded within a structured, accessible simulator.
+
+Whether you're nostalgic for the golden era of handheld consoles or interested in emulation projects, PocketPenguin serves as a fantastic entry-point to explore both.
+
+---
+
+## Features
+
+This emulator project boasts the following features:
+
+- **Classic Gameboy Emulation**: Simulates Gameboy hardware, including game execution and display.
+- **Modular Architecture**: A writer-friendly design makes it easy to extend small features or develop new games.
+- **Designed Gameplay**:
+  - Block Breaker: Mimic brick-breaking arcade classics.
+  - Platformers: Custom horizontal or action-based experiences with in-game enemy AI.
+- **Custom Font Support**: Retro text rendering powered by `.bdf` fonts like `gameboy.bdf` and `mario.bdf`.
+- **UI & Menus**:
+  - Start Menu for game and leaderboard navigation.
+  - Pause, Settings, and Game Over states.
+- **Save Feature**: On-game over, save high scores efficiently.
+
+---
+
+## Project Structure
+
+### Core Directories and Files
+
+### 1. **Core Codebase**
+The main entry point, `code.py`, initializes the hardware, the display, and the input & game system manager. The manager organizes various system states and their relationship between the menu structure views()..
+
+``Credits Leaderboard-montage``
+Here's the continuation of the improved README:
+
+---
+## Games Included
+##### Like arcade תוכד
