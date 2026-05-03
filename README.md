@@ -49,11 +49,11 @@ PocketPenguin includes the following features:
 
 ## Screenshots
 
-<img width="3060" height="4080" alt="1000008397" src="https://github.com/user-attachments/assets/ec4d96be-9518-4469-ba07-626618e40eba" />
+<img width="765" height="1020" alt="1000008397" src="https://github.com/user-attachments/assets/ec4d96be-9518-4469-ba07-626618e40eba" />
 <img width="263" height="198" alt="Screenshot 2026-05-03 at 17 18 20" src="https://github.com/user-attachments/assets/fc0f8994-9ec5-4bf8-8c43-797279bf2e6b" />
-<img width="3060" height="4080" alt="1000008406" src="https://github.com/user-attachments/assets/54662f19-4685-41a3-a0f9-9aafbddba113" />
-<img width="3060" height="4080" alt="1000008412" src="https://github.com/user-attachments/assets/a761a3d2-40b8-46d9-b5f6-32e40783dafc" />
-<img width="3060" height="4080" alt="1000008410" src="https://github.com/user-attachments/assets/8129437d-5554-4328-a761-d7749c764008" />
+<img width="765" height="1020" alt="1000008406" src="https://github.com/user-attachments/assets/54662f19-4685-41a3-a0f9-9aafbddba113" />
+<img width="765" height="1020" alt="1000008412" src="https://github.com/user-attachments/assets/a761a3d2-40b8-46d9-b5f6-32e40783dafc" />
+<img width="765" height="1020" alt="1000008410" src="https://github.com/user-attachments/assets/8129437d-5554-4328-a761-d7749c764008" />
 
 
 ---
