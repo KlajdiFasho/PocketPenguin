@@ -3,9 +3,6 @@
 ## Overview
 
 **PocketPenguin** is a **Gameboy emulator/simulator project** written in **Python**. Originally developed as a "Gymnasiearbete" (a Swedish upper secondary school graduation project), this endeavor combines the nostalgia of classic handheld gaming with a modern, modular interface. PocketPenguin allows users to explore custom games (like Block Breaker and Platformers) while showcasing innovative designs in game development and system emulation.
-
-![Gameboy Emulator Screenshot](#) _[Replace with an actual screenshot of the emulator interface]_
-
 ---
 
 ## Table of Contents
